@@ -49,12 +49,12 @@
 		48AF21122E5A10E700F712EA = {
 			isa = PBXGroup;
 			children = (
+				48AF21322E5A1E7D00F712EA /* Models */,
+				48AF21332E5A1E8600F712EA /* ViewModels */,
+				48AF212D2E5A14C600F712EA /* Views */,
 				48AF215A2E5A274600F712EA /* Helpers */,
 				48AF21542E5A271300F712EA /* Assets.xcassets */,
 				48AF21552E5A271300F712EA /* QRScan.swift */,
-				48AF21332E5A1E8600F712EA /* ViewModels */,
-				48AF21322E5A1E7D00F712EA /* Models */,
-				48AF212D2E5A14C600F712EA /* Views */,
 				48AF211C2E5A10E700F712EA /* Products */,
 			);
 			sourceTree = "<group>";
