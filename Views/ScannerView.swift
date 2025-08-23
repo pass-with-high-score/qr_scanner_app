@@ -8,24 +8,105 @@
 import SwiftUI
 
 struct ScannerView: View {
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var scanner = QRCodeScanner()
+    @State private var laserOffset: CGFloat = -110
+    @State private var movingDown = true
+    @State private var laserTimer: Timer?
+    @State private var showSuccessAlert = false
+    @State private var scannedCodeTemp: String?
     
     var onCodeScanned: (String) -> Void
+    
     var body: some View {
         ZStack {
+            // Camera
             CameraPreview(session: scanner)
                 .ignoresSafeArea()
+            
+            GeometryReader { geo in
+                let center = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
+                ZStack {
+                    // Mask
+                    Color.black.opacity(0.6)
+                        .mask {
+                            Rectangle()
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .frame(width: 240, height: 240)
+                                        .blendMode(.destinationOut)
+                                        .position(center)
+                                )
+                        }
+                        .compositingGroup()
+                        .ignoresSafeArea()
+                    
+                    // Border, QR image & Laser
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.white, lineWidth: 2)
+                            .frame(width: 240, height: 240)
+                        
+                        Image(systemName:"qrcode.viewfinder")
+                            .resizable()
+                            .foregroundColor(.white)
+                            .scaledToFit()
+                            .frame(width: 180, height: 180)
+                        
+                        // Moving laser
+                        Rectangle()
+                            .fill(Color.green)
+                            .frame(width: 220, height: 2)
+                            .offset(y: laserOffset)
+                            .animation(.linear(duration: 1), value: laserOffset)
+                    }
+                    .frame(width: 240, height: 240)
+                    .position(center)
+                }
+                .frame(width: geo.size.width, height: geo.size.height)
+                .onAppear {
+                    laserTimer =  Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                        withAnimation {
+                            if movingDown {
+                                laserOffset = 110
+                            } else {
+                                laserOffset = -110
+                            }
+                            movingDown.toggle()
+                        }
+                    }
+                }
+            }
+            .ignoresSafeArea()
+            
+            // Text hướng dẫn
             VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                }
+                
                 Spacer()
-                Text("Đưa mã QR vào khung")
-                    .padding()
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(10)
-                    .padding()
+                
+                Text("Đưa mã QR vào trong khung")
+                    .foregroundColor(.white)
+                    .padding(.top, 16)
+                    .font(.headline)
+                
             }
         }
         .onReceive(scanner.$scannedCode.compactMap { $0 }) { code in
-            onCodeScanned(code)
+            scannedCodeTemp = code
+            showSuccessAlert = true
+            scanner.stopScanning()
+            laserTimer?.invalidate()
         }
         .onAppear {
             scanner.startScanning()
@@ -33,8 +114,30 @@ struct ScannerView: View {
         .onDisappear {
             scanner.stopScanning()
         }
+        .alert("Đã quét thành công", isPresented: $showSuccessAlert, presenting: scannedCodeTemp) { code in
+            Button("Lưu") {
+                onCodeScanned(code)
+                dismiss()
+            }
+            Button("Sao chép") {
+                UIPasteboard.general.string = code
+                dismiss()
+            }
+            if let url = URL(string: code), UIApplication.shared.canOpenURL(url) {
+                Button("Mở liên kết") {
+                    UIApplication.shared.open(url)
+                    dismiss()
+                }
+            }
+            Button("Huỷ", role: .cancel) {
+                dismiss()
+            }
+        } message: { code in
+            Text("Nội dung: \(code)")
+        }
     }
 }
+
 
 struct CameraPreview: UIViewRepresentable {
     @ObservedObject var session: QRCodeScanner

@@ -9,22 +9,24 @@
 /* Begin PBXBuildFile section */
 		48AF21212E5A10E700F712EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF21202E5A10E700F712EA /* ContentView.swift */; };
 		48AF212F2E5A14DA00F712EA /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF212E2E5A14DA00F712EA /* ScannerView.swift */; };
-		48AF21312E5A16F600F712EA /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF21302E5A16F600F712EA /* HistoryView.swift */; };
+		48AF21312E5A16F600F712EA /* HistoryTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF21302E5A16F600F712EA /* HistoryTabView.swift */; };
 		48AF21352E5A1EA900F712EA /* QRCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF21342E5A1EA900F712EA /* QRCodeItem.swift */; };
 		48AF21372E5A1EF500F712EA /* QRScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF21362E5A1EF500F712EA /* QRScannerViewModel.swift */; };
 		48AF21572E5A271300F712EA /* QRScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF21552E5A271300F712EA /* QRScan.swift */; };
 		48AF21582E5A271300F712EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48AF21542E5A271300F712EA /* Assets.xcassets */; };
+		48AF215E2E5A32B200F712EA /* ScanTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AF215D2E5A32B200F712EA /* ScanTabView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		48AF211B2E5A10E700F712EA /* QR Scan & Save.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QR Scan & Save.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48AF21202E5A10E700F712EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		48AF212E2E5A14DA00F712EA /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
-		48AF21302E5A16F600F712EA /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		48AF21302E5A16F600F712EA /* HistoryTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTabView.swift; sourceTree = "<group>"; };
 		48AF21342E5A1EA900F712EA /* QRCodeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeItem.swift; sourceTree = "<group>"; };
 		48AF21362E5A1EF500F712EA /* QRScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewModel.swift; sourceTree = "<group>"; };
 		48AF21542E5A271300F712EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48AF21552E5A271300F712EA /* QRScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScan.swift; sourceTree = "<group>"; };
+		48AF215D2E5A32B200F712EA /* ScanTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTabView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -70,9 +72,9 @@
 		48AF212D2E5A14C600F712EA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				48AF215C2E5A329D00F712EA /* Tab */,
 				48AF21202E5A10E700F712EA /* ContentView.swift */,
 				48AF212E2E5A14DA00F712EA /* ScannerView.swift */,
-				48AF21302E5A16F600F712EA /* HistoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -91,6 +93,15 @@
 				48AF21362E5A1EF500F712EA /* QRScannerViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		48AF215C2E5A329D00F712EA /* Tab */ = {
+			isa = PBXGroup;
+			children = (
+				48AF21302E5A16F600F712EA /* HistoryTabView.swift */,
+				48AF215D2E5A32B200F712EA /* ScanTabView.swift */,
+			);
+			path = Tab;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,7 +181,8 @@
 			files = (
 				48AF21212E5A10E700F712EA /* ContentView.swift in Sources */,
 				48AF212F2E5A14DA00F712EA /* ScannerView.swift in Sources */,
-				48AF21312E5A16F600F712EA /* HistoryView.swift in Sources */,
+				48AF21312E5A16F600F712EA /* HistoryTabView.swift in Sources */,
+				48AF215E2E5A32B200F712EA /* ScanTabView.swift in Sources */,
 				48AF21572E5A271300F712EA /* QRScan.swift in Sources */,
 				48AF21352E5A1EA900F712EA /* QRCodeItem.swift in Sources */,
 				48AF21372E5A1EF500F712EA /* QRScannerViewModel.swift in Sources */,

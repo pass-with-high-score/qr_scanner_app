@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HistoryView: View {
+struct HistoryTabView: View {
     @ObservedObject var viewModel: QRScannerViewModel
     @State private var searchText = ""
     @State private var editMode: EditMode = .inactive

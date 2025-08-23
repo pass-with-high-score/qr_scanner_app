@@ -41,11 +41,16 @@ final class QRCodeScanner: NSObject, ObservableObject {
     }
     
     func startScanning() {
-        session.startRunning()
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.session.startRunning()
+        }
     }
+
     
     func stopScanning() {
-        session.stopRunning()
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.session.stopRunning()
+        }
     }
     
     func getPreviewLayer() -> AVCaptureVideoPreviewLayer? {

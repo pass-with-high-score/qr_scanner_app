@@ -9,31 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var viewModel = QRScannerViewModel()
-    @State private var isShowScanner = false
     
     var body: some View {
         TabView {
-            VStack {
-                Button("Quét mã QR") {
-                    isShowScanner = true
-                }
-                .font(.title)
-                .padding()
-                .sheet(isPresented: $isShowScanner) {
-                    ScannerView { code in
-                        viewModel.addToStory(code)
-                        isShowScanner = false
-                    }
-                }
-            }
+            ScanTabView(viewModel: viewModel)
             .tabItem {
                 Label("Scan", systemImage: "qrcode.viewfinder")
             }
-            HistoryView(viewModel: viewModel)
+            HistoryTabView(viewModel: viewModel)
                 .tabItem {
                     Label("Lịch sử", systemImage: "clock")
                 }
         }
+        .background(Color(.systemGroupedBackground))
     }
 }
 
