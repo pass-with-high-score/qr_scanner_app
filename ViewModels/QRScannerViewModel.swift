@@ -29,13 +29,14 @@ final class QRScannerViewModel: ObservableObject {
         history.remove(atOffsets: offsets)
     }
     
-    func moveItems(from source: IndexSet, to destination: Int) {
-        history.move(fromOffsets: source, toOffset: destination)
-    }
-    
     func clearHistory() {
         history.removeAll()
     }
+    
+    func deleteByIDs(_ ids: Set<UUID>) {
+        history.removeAll { ids.contains($0.id) }
+    }
+
     
     private func saveToStorage() {
         if let data = try? JSONEncoder().encode(history) {
