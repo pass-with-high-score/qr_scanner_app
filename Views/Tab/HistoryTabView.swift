@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreImage.CIFilterBuiltins
 
 struct HistoryTabView: View {
     @ObservedObject var viewModel: QRScannerViewModel
@@ -13,6 +14,11 @@ struct HistoryTabView: View {
     @State private var editMode: EditMode = .inactive
     @State private var selection = Set<UUID>()
     @State private var showingClearConfirm = false
+    @State private var showShareSheet = false
+    @State private var shareContent: IdentifiableString?
+    @State private var selectedQRForPreview: IdentifiableString?
+
+
     
     var filteredHistory: [QRCodeItem] {
         if searchText.isEmpty {
@@ -65,6 +71,41 @@ struct HistoryTabView: View {
                                 .font(.caption)
                                 .foregroundColor(.gray)
                             }
+                            .contextMenu {
+                                Button {
+                                    UIPasteboard.general.string = item.content
+                                } label: {
+                                    Label("Sao chép", systemImage: "doc.on.doc")
+                                }
+                                
+                                if let url = URL(string: item.content), UIApplication.shared.canOpenURL(url) {
+                                    Button {
+                                        UIApplication.shared.open(url)
+                                    } label: {
+                                        Label("Mở trong Safari", systemImage: "safari")
+                                    }
+                                }
+                                
+                                Button {
+                                    selectedQRForPreview = IdentifiableString(value: item.content)
+                                } label: {
+                                    Label("Xem mã QR", systemImage: "qrcode")
+                                }
+                                
+                                Button {
+                                    shareContent = IdentifiableString(value: item.content)
+                                    showShareSheet = true
+                                } label: {
+                                    Label("Chia sẻ", systemImage: "square.and.arrow.up")
+                                }
+                                
+                                Button(role: .destructive) {
+                                    viewModel.deleteByIDs([item.id])
+                                } label: {
+                                    Label("Xoá", systemImage: "trash")
+                                }
+                            }
+
                         }
                         .onDelete(perform: viewModel.deleteItems)
                     }
@@ -103,6 +144,28 @@ struct HistoryTabView: View {
             }
             .searchable(text: $searchText, prompt: "Tìm mã QR...")
             .navigationTitle("Lịch sử QR")
+            .sheet(item: $selectedQRForPreview) { item in
+                QRImagePreviewView(content: item.value)
+            }
+            .sheet(item: $shareContent) { item in
+                ActivityView(text: item.value)
+            }
+
         }
     }
+}
+
+struct IdentifiableString: Identifiable, Equatable {
+    var id: String { value }
+    let value: String
+}
+
+struct ActivityView: UIViewControllerRepresentable {
+    let text: String
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
+        return UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {}
 }

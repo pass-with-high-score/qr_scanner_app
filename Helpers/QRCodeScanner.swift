@@ -7,6 +7,8 @@
 
 import AVFoundation
 import SwiftUI
+import CoreImage.CIFilterBuiltins
+import UIKit
 
 final class QRCodeScanner: NSObject, ObservableObject {
     @Published var scannedCode: String?
@@ -45,7 +47,7 @@ final class QRCodeScanner: NSObject, ObservableObject {
             self.session.startRunning()
         }
     }
-
+    
     
     func stopScanning() {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -69,4 +71,24 @@ extension QRCodeScanner: AVCaptureMetadataOutputObjectsDelegate {
             stopScanning()
         }
     }
+}
+
+
+func generateQRCode(from string: String) -> UIImage? {
+    let context = CIContext()
+    let filter = CIFilter.qrCodeGenerator()
+    let data = Data(string.utf8)
+    filter.setValue(data, forKey: "inputMessage")
+    
+    if let outputImage = filter.outputImage {
+        // Scale lên để nét không bị mờ
+        let transform = CGAffineTransform(scaleX: 10, y: 10)
+        let scaledImage = outputImage.transformed(by: transform)
+        
+        if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
+            return UIImage(cgImage: cgImage)
+        }
+    }
+    
+    return nil
 }
