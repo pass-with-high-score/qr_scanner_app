@@ -58,6 +58,20 @@ final class QRCodeScanner: NSObject, ObservableObject {
     func getPreviewLayer() -> AVCaptureVideoPreviewLayer? {
         return previewLayer
     }
+    
+    func toggleTorch() {
+        guard let device = AVCaptureDevice.default(for: .video),
+              device.hasTorch else { return }
+        
+        do {
+            try device.lockForConfiguration()
+            device.torchMode = device.torchMode == .on ? .off : .on
+            device.unlockForConfiguration()
+        } catch {
+            print("⚠️ Lỗi bật đèn flash: \(error)")
+        }
+    }
+
 }
 
 extension QRCodeScanner: AVCaptureMetadataOutputObjectsDelegate {

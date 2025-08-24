@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ScannerView: View {
     @Environment(\.dismiss) private var dismiss
@@ -82,6 +83,14 @@ struct ScannerView: View {
             // Text hướng dẫn
             VStack {
                 HStack {
+                    Button {
+                        scanner.toggleTorch()
+                    } label: {
+                        Image(systemName: "flashlight.on.fill")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding()
+                    }
                     Spacer()
                     Button {
                         dismiss()
@@ -107,6 +116,10 @@ struct ScannerView: View {
             showSuccessAlert = true
             scanner.stopScanning()
             laserTimer?.invalidate()
+            
+            // vibrate on success
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
         }
         .onAppear {
             scanner.startScanning()

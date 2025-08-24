@@ -11,29 +11,30 @@ import CoreImage.CIFilterBuiltins
 struct HistoryTabView: View {
     @ObservedObject var viewModel: QRScannerViewModel
     @State private var searchText = ""
-    @State private var editMode: EditMode = .inactive
-    @State private var selection = Set<UUID>()
     @State private var showingClearConfirm = false
     @State private var showShareSheet = false
     @State private var shareContent: IdentifiableString?
     @State private var selectedQRForPreview: IdentifiableString?
-
-
     
-    var filteredHistory: [QRCodeItem] {
-        if searchText.isEmpty {
-            return viewModel.history
-        } else {
-            return viewModel.history.filter {
-                $0.content.localizedCaseInsensitiveContains(searchText)
-            }
+    var filteredDaySections: [QRDaySection] {
+        let filtered = searchText.isEmpty
+        ? viewModel.history
+        : viewModel.history.filter {
+            $0.content.localizedCaseInsensitiveContains(searchText)
         }
+        
+        let grouped = Dictionary(grouping: filtered, by: { Calendar.current.startOfDay(for: $0.scannedAt) })
+        
+        return grouped.map { (date, items) in
+            QRDaySection(date: date, items: items)
+        }
+        .sorted { $0.date > $1.date }
     }
     
     var body: some View {
         NavigationView {
             Group {
-                if !searchText.isEmpty && filteredHistory.isEmpty {
+                if !searchText.isEmpty && filteredDaySections.isEmpty {
                     VStack(spacing: 16) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 48))
@@ -60,86 +61,17 @@ struct HistoryTabView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
-                    List(selection: $selection) {
-                        ForEach(filteredHistory) { item in
-                            VStack(alignment: .leading) {
-                                Text(item.content)
-                                    .font(.headline)
-                                Text(
-                                    "Scanned at: \(DateFormatter.localizedString(from: item.scannedAt, dateStyle: .short, timeStyle: .short))"
-                                )
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                            }
-                            .contextMenu {
-                                Button {
-                                    UIPasteboard.general.string = item.content
-                                } label: {
-                                    Label("Sao chép", systemImage: "doc.on.doc")
-                                }
-                                
-                                if let url = URL(string: item.content), UIApplication.shared.canOpenURL(url) {
-                                    Button {
-                                        UIApplication.shared.open(url)
-                                    } label: {
-                                        Label("Mở trong Safari", systemImage: "safari")
-                                    }
-                                }
-                                
-                                Button {
-                                    selectedQRForPreview = IdentifiableString(value: item.content)
-                                } label: {
-                                    Label("Xem mã QR", systemImage: "qrcode")
-                                }
-                                
-                                Button {
-                                    shareContent = IdentifiableString(value: item.content)
-                                    showShareSheet = true
-                                } label: {
-                                    Label("Chia sẻ", systemImage: "square.and.arrow.up")
-                                }
-                                
-                                Button(role: .destructive) {
-                                    viewModel.deleteByIDs([item.id])
-                                } label: {
-                                    Label("Xoá", systemImage: "trash")
-                                }
-                            }
-
-                        }
-                        .onDelete(perform: viewModel.deleteItems)
-                    }
-                    .toolbar {
-                        EditButton()
-                        if !selection.isEmpty {
-                            Button {
-                                viewModel.deleteByIDs(selection)
-                                selection.removeAll()
-                            } label: {
-                                Label("Delete (\(selection.count))", systemImage: "trash")
-                            }
-                        }
-                        if editMode == .active {
-                            Button {
-                                selection = Set(viewModel.history.map { $0.id })
-                            } label: {
-                                Label("Select All", systemImage: "checkmark.circle")
-                            }
-                            Button {
-                                showingClearConfirm = true
-                            } label: {
-                                Label("Clear All", systemImage: "xmark.circle")
-                            }
-                            .alert("Xác nhận xoá toàn bộ?", isPresented: $showingClearConfirm) {
-                                Button("Xoá", role: .destructive) {
-                                    viewModel.clearHistory()
-                                    selection.removeAll()
-                                }
-                                Button("Huỷ", role: .cancel) { }
-                            }
+                    List {
+                        ForEach(filteredDaySections) { section in
+                            SectionView(
+                                section: section,
+                                viewModel: viewModel,
+                                shareContent: $shareContent,
+                                selectedQRForPreview: $selectedQRForPreview,
+                                showShareSheet: $showShareSheet
+                            )
                         }
                     }
-                    .environment(\.editMode, $editMode)
                 }
             }
             .searchable(text: $searchText, prompt: "Tìm mã QR...")
@@ -150,22 +82,6 @@ struct HistoryTabView: View {
             .sheet(item: $shareContent) { item in
                 ActivityView(text: item.value)
             }
-
         }
     }
-}
-
-struct IdentifiableString: Identifiable, Equatable {
-    var id: String { value }
-    let value: String
-}
-
-struct ActivityView: UIViewControllerRepresentable {
-    let text: String
-    
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: [text], applicationActivities: nil)
-    }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {}
 }

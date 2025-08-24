@@ -51,3 +51,15 @@ final class QRScannerViewModel: ObservableObject {
         }
     }
 }
+
+extension QRScannerViewModel {
+    var daySections: [QRDaySection] {
+        let grouped = Dictionary(grouping: history) { item in
+            Calendar.current.startOfDay(for: item.scannedAt)
+        }
+        return grouped
+            .map { QRDaySection(date: $0.key, items: $0.value.sorted { $0.scannedAt > $1.scannedAt }) }
+            .sorted { $0.date > $1.date }
+    }
+}
+
