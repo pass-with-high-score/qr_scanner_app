@@ -6,13 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4841CABD2E5B413B00291017 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4841CABC2E5B413B00291017 /* Localizable.xcstrings */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		4841CABC2E5B413B00291017 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		48AF211B2E5A10E700F712EA /* QRScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		48CD72A32E5B4F2700E8DFF4 /* Exceptions for "QRScanner" folder in "QRScanner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 48AF211A2E5A10E700F712EA /* QRScanner */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		48AF215A2E5A274600F712EA /* QRScanner */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				48CD72A32E5B4F2700E8DFF4 /* Exceptions for "QRScanner" folder in "QRScanner" target */,
+			);
 			path = QRScanner;
 			sourceTree = "<group>";
 		};
@@ -32,6 +50,7 @@
 		48AF21122E5A10E700F712EA = {
 			isa = PBXGroup;
 			children = (
+				4841CABC2E5B413B00291017 /* Localizable.xcstrings */,
 				48AF215A2E5A274600F712EA /* QRScanner */,
 				48AF211C2E5A10E700F712EA /* Products */,
 			);
@@ -90,10 +109,14 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				vi,
 				Base,
 			);
 			mainGroup = 48AF21122E5A10E700F712EA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4841CA9A2E5AD65100291017 /* XCRemoteSwiftPackageReference "qrcode" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 48AF211C2E5A10E700F712EA /* Products */;
 			projectDirPath = "";
@@ -109,6 +132,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4841CABD2E5B413B00291017 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +209,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -242,6 +267,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -256,6 +282,9 @@
 				DEVELOPMENT_TEAM = T9WGMY76XQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRScanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "QR Scanner";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Ứng dụng cần quyền truy cập camera để quét mã QR.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -286,6 +315,9 @@
 				DEVELOPMENT_TEAM = T9WGMY76XQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = QRScanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "QR Scanner";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Ứng dụng cần quyền truy cập camera để quét mã QR.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -328,6 +360,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4841CA9A2E5AD65100291017 /* XCRemoteSwiftPackageReference "qrcode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dagronf/qrcode.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 27.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 48AF21132E5A10E700F712EA /* Project object */;
 }

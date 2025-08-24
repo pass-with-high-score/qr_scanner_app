@@ -104,7 +104,7 @@ struct ScannerView: View {
                 
                 Spacer()
                 
-                Text("Đưa mã QR vào trong khung")
+                Text("title_place_the_qr_code_inside_the_frame")
                     .foregroundColor(.white)
                     .padding(.top, 16)
                     .font(.headline)
@@ -127,26 +127,26 @@ struct ScannerView: View {
         .onDisappear {
             scanner.stopScanning()
         }
-        .alert("Đã quét thành công", isPresented: $showSuccessAlert, presenting: scannedCodeTemp) { code in
-            Button("Lưu") {
+        .alert("aleart_scanned_successfully", isPresented: $showSuccessAlert, presenting: scannedCodeTemp) { code in
+            Button("btn_save") {
                 onCodeScanned(code)
                 dismiss()
             }
-            Button("Sao chép") {
+            Button("btn_copy") {
                 UIPasteboard.general.string = code
                 dismiss()
             }
             if let url = URL(string: code), UIApplication.shared.canOpenURL(url) {
-                Button("Mở liên kết") {
+                Button("btn_open_in_safari") {
                     UIApplication.shared.open(url)
                     dismiss()
                 }
             }
-            Button("Huỷ", role: .cancel) {
+            Button("btn_cancel", role: .cancel) {
                 dismiss()
             }
         } message: { code in
-            Text("Nội dung: \(code)")
+            Text("label_content \(code)")
         }
     }
 }

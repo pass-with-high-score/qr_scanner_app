@@ -13,12 +13,13 @@ struct ContentView: View {
     var body: some View {
         TabView {
             ScanTabView(viewModel: viewModel)
-            .tabItem {
-                Label("Scan", systemImage: "qrcode.viewfinder")
-            }
+                .tabItem {
+                    Label("tab_scan", systemImage: "qrcode.viewfinder"
+                    )
+                }
             HistoryTabView(viewModel: viewModel)
                 .tabItem {
-                    Label("Lịch sử", systemImage: "clock")
+                    Label("tab_history", systemImage: "clock")
                 }
         }
         .background(Color(.systemGroupedBackground))

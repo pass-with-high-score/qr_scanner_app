@@ -39,10 +39,10 @@ struct HistoryTabView: View {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 48))
                             .foregroundColor(.gray)
-                        Text("No results found")
+                        Text("label_no_results_found")
                             .font(.title3)
                             .foregroundColor(.gray)
-                        Text("Try a different search term.")
+                        Text("label_try_a_different_search_term")
                             .font(.body)
                             .foregroundColor(.secondary)
                     }
@@ -52,12 +52,13 @@ struct HistoryTabView: View {
                         Image(systemName: "qrcode.viewfinder")
                             .font(.system(size: 48))
                             .foregroundColor(.gray)
-                        Text("No QR history found")
+                        Text("title_no_qr_history_found")
                             .font(.title3)
                             .foregroundColor(.gray)
-                        Text("Scan a QR code to see it here.")
+                        Text("label_scan_a_qr_code_to_see_it_here")
                             .font(.body)
                             .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
@@ -74,8 +75,8 @@ struct HistoryTabView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, prompt: "Tìm mã QR...")
-            .navigationTitle("Lịch sử QR")
+            .searchable(text: $searchText, prompt: "hint_find_qr_code")
+            .navigationTitle("nav_qr_code_history")
             .sheet(item: $selectedQRForPreview) { item in
                 QRImagePreviewView(content: item.value)
             }
@@ -84,21 +85,21 @@ struct HistoryTabView: View {
                     Button(role: .destructive) {
                         showingClearConfirm = true
                     } label: {
-                        Label("Clear All", systemImage: "trash")
+                        Label("btn_clear_all", systemImage: "trash")
                     }
                     .tint(.red)
                 }
             }
-            .alert("Clear all history?", isPresented: $showingClearConfirm) {
-                Button("Clear", role: .destructive) {
+            .alert("alert_clear_all_history_title", isPresented: $showingClearConfirm) {
+                Button("btn_cancel", role: .destructive) {
                     viewModel.clearHistory()
                 }
-                Button("Cancel", role: .cancel) { }
+                Button("btn_cancel", role: .cancel) { }
             } message: {
-                Text("This will remove all QR history. This action cannot be undone.")
+                Text("alert_clear_all_history_content")
             }
             .sheet(item: $shareContent) { item in
-                ActivityView(text: item.value)
+                ActivityView(activityItems: [item.value])
             }
         }
     }

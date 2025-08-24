@@ -10,11 +10,16 @@ import SwiftUI
 import CoreImage.CIFilterBuiltins
 import UIKit
 
+enum CameraPosition {
+    case front, back
+}
+
 final class QRCodeScanner: NSObject, ObservableObject {
     @Published var scannedCode: String?
     
     private var session: AVCaptureSession = AVCaptureSession()
     private var previewLayer: AVCaptureVideoPreviewLayer?
+    private var currentCameraPosition: CameraPosition = .back
     
     override init() {
         super.init()
@@ -35,7 +40,7 @@ final class QRCodeScanner: NSObject, ObservableObject {
         if session.canAddOutput(metadataOutput) {
             session.addOutput(metadataOutput)
             metadataOutput.setMetadataObjectsDelegate(self, queue: .main)
-            metadataOutput.metadataObjectTypes = [.qr]
+            metadataOutput.metadataObjectTypes = metadataOutput.availableMetadataObjectTypes
         }
         
         previewLayer = AVCaptureVideoPreviewLayer(session: session)
@@ -70,6 +75,28 @@ final class QRCodeScanner: NSObject, ObservableObject {
         } catch {
             print("⚠️ Lỗi bật đèn flash: \(error)")
         }
+    }
+    
+    func switchCamera() {
+        session.beginConfiguration()
+        
+        // Remove current input
+        if let currentInput = session.inputs.first as? AVCaptureDeviceInput {
+            session.removeInput(currentInput)
+        }
+        
+        // Get new camera
+        let newPosition: AVCaptureDevice.Position = currentCameraPosition == .back ? .front : .back
+        guard let newCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: newPosition),
+              let newInput = try? AVCaptureDeviceInput(device: newCamera),
+              session.canAddInput(newInput) else {
+            session.commitConfiguration()
+            return
+        }
+        
+        session.addInput(newInput)
+        currentCameraPosition = currentCameraPosition == .back ? .front : .back
+        session.commitConfiguration()
     }
 
 }
