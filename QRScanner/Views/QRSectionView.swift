@@ -18,7 +18,7 @@ struct SectionView: View {
         Section(
             header: Text(section.date, style: .date)
                 .font(.headline)
-                .foregroundColor(.primary)
+                .foregroundColor(.primary),
         ) {
             ForEach(section.items) { item in
                 VStack(alignment: .leading) {

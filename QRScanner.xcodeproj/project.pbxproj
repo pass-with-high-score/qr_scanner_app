@@ -10,22 +10,9 @@
 		48AF211B2E5A10E700F712EA /* QRScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		4841CA972E5AC26300291017 /* Exceptions for "QRScanner" folder in "QRScanner" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Models/Untitled.swift,
-			);
-			target = 48AF211A2E5A10E700F712EA /* QRScanner */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		48AF215A2E5A274600F712EA /* QRScanner */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				4841CA972E5AC26300291017 /* Exceptions for "QRScanner" folder in "QRScanner" target */,
-			);
 			path = QRScanner;
 			sourceTree = "<group>";
 		};
