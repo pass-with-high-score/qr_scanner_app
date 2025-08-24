@@ -79,6 +79,24 @@ struct HistoryTabView: View {
             .sheet(item: $selectedQRForPreview) { item in
                 QRImagePreviewView(content: item.value)
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(role: .destructive) {
+                        showingClearConfirm = true
+                    } label: {
+                        Label("Clear All", systemImage: "trash")
+                    }
+                    .tint(.red)
+                }
+            }
+            .alert("Clear all history?", isPresented: $showingClearConfirm) {
+                Button("Clear", role: .destructive) {
+                    viewModel.clearHistory()
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("This will remove all QR history. This action cannot be undone.")
+            }
             .sheet(item: $shareContent) { item in
                 ActivityView(text: item.value)
             }
