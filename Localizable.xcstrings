@@ -117,6 +117,9 @@
         }
       }
     },
+    "btn_create_qr" : {
+
+    },
     "btn_delete" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -165,6 +168,9 @@
           }
         }
       }
+    },
+    "btn_scan_from_image" : {
+
     },
     "btn_share" : {
       "extractionState" : "manual",
@@ -215,6 +221,15 @@
           }
         }
       }
+    },
+    "Create QR Code" : {
+
+    },
+    "Done" : {
+
+    },
+    "Enter text to encode" : {
+
     },
     "Hiển thị cấu hình WiFi" : {
 
@@ -460,6 +475,7 @@
       }
     },
     "subtitle_open_camera_to_scan_qr_code" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
